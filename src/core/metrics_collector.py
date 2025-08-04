@@ -1,16 +1,16 @@
 from pymongo import MongoClient 
 import psutil
-import time
+ 
 import yaml
 from datetime import datetime 
-def load_config(path='C:/Users/Admin/Desktop/mongodb_monitoring/config.yaml'):
-    with open (path , 'r') as file :
-        return yaml.safe_load(file)
+ 
  
 
 
 class MetricsCollector :
-    def __init__(self, config):
+    def __init__(self, config_path):
+        with open (config_path , 'r') as file :
+            config= yaml.safe_load(file)
         self.config=config
         self.mongodb_uri=config['mongodb']['uri']
         self.db_name=config['mongodb']['database']
@@ -57,8 +57,8 @@ class MetricsCollector :
         return metrics
 '''if __name__=="__main__" :
     try:
-        config= load_config()
-        collector= MetricsCollector(config)
+         
+        collector= MetricsCollector("C:/Users/Admin/Desktop/mongodb_monitoring/config.yaml")
         metrics=collector.collect_all()
         print("Métriques collectées :")
     except Exception as e :
