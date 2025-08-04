@@ -1,0 +1,25 @@
+version : '3.9'
+
+
+services:
+# service de mongodb 
+ mongo_db2:
+  container_name: mongo_db_container 
+  image: mongo:latest 
+  volumes:
+   - mongo_db:/data/db 
+   
+  api2:
+   build: .
+   ports:
+    -"4000:3000"
+   environment:
+    PORT: 4000
+    MONGODB_URI : mongodb://mongo_db:27017
+    DB_NAME : my_db 
+    NAME : mongodb_Monitoring
+   depends_on  :
+   - mongo_db
+volumes :
+ mongo_db: {}
+

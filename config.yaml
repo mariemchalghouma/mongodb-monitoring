@@ -1,0 +1,71 @@
+mongodb:
+ uri: "mongodb://localhost:27017"
+ database: "db_monitoring"
+  
+
+monitoring:
+ inverval_seconds: 30
+ metrics_to_collect:
+  - "memory_usage"
+  - "cpu_usage"
+  - "disque_usage"
+  - "connection_count"
+  - "query_performance"
+databases:
+ - "production_db"
+ - "analytics_db"
+ - "logs_db"
+alerts:
+ threshold: 
+  cpu_usage: 
+   warning: 70 
+   critical: 90 
+  
+  memory_usage: 
+   warning: 80
+   critical: 95
+  disk_usage:
+   warning: 85 
+   critical: 95
+  connection_count:
+   warning: 100
+   critical: 200
+  query_performance:
+   insert:
+    warning: 1000
+    critical: 5000
+   query:
+    warning: 10000
+    critical: 50000
+email :
+ enable: true 
+ use_tls: true
+
+ smtp_server: "smtp.gmail.com"
+ smtp_port : 587 
+ from_email: "${ALERT_EMAIL}"
+ to_emails :
+   - "admin@company.com"
+   - "dba@company.com"
+ username : "meriemchalghouma@gmail.com"
+ password: ""
+index_analysis:
+
+ min_unused_days: 7
+ slow_query_threshold_ms: 100
+ large_index_threhold_mb: 100
+ very_large_index_threhold_mb: 1000
+
+ excluded_databases:
+    - "admin"
+    - "local" 
+    - "config"
+    
+
+ 
+
+
+
+  
+
+
