@@ -3,9 +3,13 @@ from datetime import datetime , timedelta
 from typing import Dict ,List , Any , Optional 
 from pymongo import MongoClient 
 from pymongo.errors import OperationFailure 
+import yaml
 
 class IndexAnalyzer :
     def __init__(self , client: MongoClient , config ):
+
+        with open(config , 'r') as file:
+            config = yaml.safe_load(file)
         self.client=client 
         self.config=config
         self.logger=logging.getLogger(__name__)
@@ -138,9 +142,10 @@ class IndexAnalyzer :
                     try : 
                         collection= db[collection_name]
                          
-                        stats = db.command('collStats', collection_name, indexDetails=True)
-                        if 'indexSizes' in stats :
-                            for index_name , size_bytes in stats['indexSizes'].items():
+                        stats = db.command('collStats', collection_name)
+                        index_stats=list(collection.aggregate([{"$indexStats": {}}]))
+                        if 'indexSizes' in index_stats :
+                            for index_name , size_bytes in index_stats['indexSizes'].items():
                                 size_mb=size_bytes/(1024*1024)
                                 if size_mb>size_threshold :
                                     large_indexes.append({
